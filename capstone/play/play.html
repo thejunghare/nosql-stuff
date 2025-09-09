@@ -1,0 +1,130 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Chat</title>
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    
+    .chat-box {
+      border: 1px solid #ccc;
+      height: 400px;
+      padding: 10px;
+      overflow-y: scroll;
+      margin-bottom: 10px;
+    }
+    
+    .message {
+      margin-bottom: 10px;
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .username {
+      font-weight: bold;
+      color: blue;
+    }
+    
+    input, button {
+      padding: 8px;
+      margin: 5px;
+    }
+    
+    button {
+      background: blue;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Simple Chat</h1>
+  
+  <div id="messages" class="chat-box"></div>
+  
+  <input type="text" id="nameInput" placeholder="Your name">
+  <br>
+  <input type="text" id="messageInput" placeholder="Type message here">
+  <button id="sendBtn">Send</button>
+
+  <script>
+    // Firebase setup
+    const firebaseConfig = {
+      apiKey: "AIzaSyD57N2Ewp8UVtcXKmVMFyP1HeTBksh4iww",
+      authDomain: "my-project-9714d.firebaseapp.com",
+      projectId: "my-project-9714d",
+      storageBucket: "my-project-9714d.firebasestorage.app",
+      messagingSenderId: "84976519917",
+      appId: "1:84976519917:web:1294f53b957c48e38f5ae4",
+    };
+
+    // Start Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Get elements
+    const messagesDiv = document.getElementById('messages');
+    const messageInput = document.getElementById('messageInput');
+    const nameInput = document.getElementById('nameInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    // Send message
+    function sendMessage() {
+      const text = messageInput.value;
+      const name = nameInput.value || 'Anonymous';
+      
+      if (text.trim() === '') return;
+      
+      // Add to Firestore
+      db.collection('messages').add({
+        text: text,
+        username: name,
+        timestamp: new Date()
+      });
+      
+      // Clear input
+      messageInput.value = '';
+    }
+
+    // Show message in chat
+    function showMessage(data) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message';
+      messageDiv.innerHTML = `
+        <span class="username">${data.username}:</span> ${data.text}
+      `;
+      messagesDiv.appendChild(messageDiv);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // Listen for new messages
+    db.collection('messages')
+      .orderBy('timestamp')
+      .onSnapshot((snapshot) => {
+        messagesDiv.innerHTML = '';
+        snapshot.forEach((doc) => {
+          showMessage(doc.data());
+        });
+      });
+
+    // Button click
+    sendBtn.onclick = sendMessage;
+
+    // Enter key
+    messageInput.onkeypress = function(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    };
+  </script>
+</body>
+</html>
