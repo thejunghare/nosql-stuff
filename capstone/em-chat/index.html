@@ -4,14 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Chat</title>
-    <style>
-      /* #chats {
-          border: 2px solid red;
-          width: 50%;
-          height: 10%;
-          overflow: scroll;
-      } */
-    </style>
 
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
@@ -23,10 +15,6 @@
   </head>
 
   <body>
-    <!-- <div id="message">
-    <p id="msg"></p>
-</div> -->
-
     <div id="chats"></div>
 
     <label for="user-name">Name</label
@@ -49,10 +37,7 @@
 
     <script type="module">
       import { firebaseConfig } from "./config.js";
-      import { addMsg } from "./addFunction.js";
-      import { deleteMsg } from "./deleteFunction.js";
-      import { getMsg } from "./getFunction.js";
-      import { functionObject } from "./single.js";
+      import { myfunction } from "./functions.js";
 
       firebase.initializeApp(firebaseConfig);
 
@@ -66,24 +51,13 @@
         let name = document.getElementById("user-name").value || "Guest";
         let text = document.getElementById("user-text").value;
 
-        // ifEXists -> meta.data-> uid, data -> key & values
-        //let ifExists = false;
-
-        /* if (ifExists) {
-          updateMsg();
-        } else {
-          addMsg(name, text);
-        } */
-
-        addMsg(name, text);
+        myfunction.addMsg(name, text);
 
         document.getElementById("user-name").value = "";
         document.getElementById("user-text").value = "";
       });
 
-      getMsg();
-
-      functionObject.one();
+      myfunction.getMsg();
     </script>
   </body>
 </html>
