@@ -48,10 +48,11 @@
       btn.addEventListener("click", () => {
         console.log("clicked");
 
+        // inputs
         let name = document.getElementById("user-name").value || "Guest";
         let text = document.getElementById("user-text").value;
 
-        myfunction.addMsg(name, text);
+       myfunction.addMsg(name, text)
 
         document.getElementById("user-name").value = "";
         document.getElementById("user-text").value = "";

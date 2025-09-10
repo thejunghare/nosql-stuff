@@ -19,6 +19,7 @@ function getMsg() {
         .collection("chat")
         .onSnapshot((changes) => {
             changes.docChanges().forEach((change) => {
+                // fetching msg
                 if (change.type === "added") {
                     //para.innerText += `${change.doc.data().name}: ${change.doc.data().text}\n`;
                     let pElement = document.createElement("p"); // creating new p tag
@@ -32,6 +33,7 @@ function getMsg() {
 
                     //update button
                     let updateButton = document.createElement("button");
+                    updateButton.setAttribute("id", 'updatedBtn');
                     updateButton.innerText = "Update Msg";
 
                     //get the div
@@ -41,13 +43,28 @@ function getMsg() {
                     chatContainer.appendChild(delBtn);
                     chatContainer.appendChild(updateButton);
 
-                    updateButton.onclick = () => {
+                     updateButton.onclick = () => {
                         // get the message and send to input field
                         let getpara = document.getElementById(change.doc.id).innerText;
                         // innerText name : message
+                        let docId = change.doc.id;
+                        console.log(docId);
+
                         let [oldname, oldmsg] = getpara.split(":")
                         console.log(oldname, oldmsg);
-                    };
+
+                        document.getElementById('user-name').value = oldname;
+                        document.getElementById('user-text').value = oldmsg;
+                        
+
+                       
+                    }; 
+
+                    if (change.doc.id) {
+                        let newname = document.getElementById('user-name').value;
+                        let newmsg = document.getElementById('user-text').value;
+                        document.getElementById('btn').addEventListener('click', myfunction.updateMsg(docId, newname, newmsg))
+                    }
 
                     delBtn.onclick = () => deleteMsg(change.doc.id);
                 } else if (change.type === "removed") {
@@ -63,10 +80,8 @@ function getMsg() {
         });
 }
 
-
-
 function updateMsg() {
-
+    console.log('hey')
 }
 
 export const myfunction = {
