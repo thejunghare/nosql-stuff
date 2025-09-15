@@ -3,7 +3,7 @@ export function deleteMsg(docId) {
         console.log("delete msg function");
         let delete_fun = firebase
             .firestore()
-            .collection("chat")
+            .collection("mz-chat")
             .doc(docId)
             .delete();
         if (delete_fun) {

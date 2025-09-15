@@ -2,6 +2,7 @@ export function getMsg() {
     firebase
         .firestore()
         .collection("mz-chat")
+        .orderBy("text")
         .onSnapshot((changes) => {
             changes.docChanges().forEach((change) => {
                 if (change.type === "added") {
@@ -9,7 +10,7 @@ export function getMsg() {
                     let pElement = document.createElement("p"); // creating new p tag
                     pElement.setAttribute("id", change.doc.id);
                     pElement.innerText = `${change.doc.data().name}:${change.doc.data().text
-                        }`;
+                    }`;
 
                     // delete button
                     let delBtn = document.createElement("button"); // creating new delete button
@@ -40,7 +41,11 @@ export function getMsg() {
 
                     };
 
-                    delBtn.onclick = () => deleteMsg(change.doc.id);
+                    //delBtn.onclick = () => deleteMsg(change.doc.id);
+                    delBtn.onclick = () => {
+                        firebase.firestore().collection("mz-chat").doc(change.doc.id).delete();
+                      };
+
                 } else if (change.type === "removed") {
                     document.getElementById(change.doc.id).remove();
 

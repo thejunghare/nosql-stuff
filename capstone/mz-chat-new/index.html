@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>My Chat</title>
     <style>
       /* #chats {
@@ -22,11 +22,35 @@
     />
   </head>
 
+  <style>
+    div {
+      display: flex;
+    }
+
+    #chats {
+      display: flex;
+      flex-direction: column;
+
+    }
+
+    #chats > button {
+      width: 20%;
+    }
+  </style>
+
   <body>
     <!-- <div id="message">
-    <p id="msg"></p>
-</div> -->
+<p id="msg"></p>
+    </div> -->
 
+    <!-- search features through msg-->
+    <div id='search-container'>
+      <input type="text" id='search' placeholder="Search with text/messsgae">
+      <button id="search-btn">search</button>
+      <button id="clear-btn">clear</button>
+    </div>
+
+    <!--update once with edit label-->
     <div id="chats"></div>
 
     <label for="user-name">Name</label
@@ -45,6 +69,7 @@
       value=""
       placeholder="message"
     />
+    <!--<button id="btn">send</button>-->
     <button id="btn">send</button>
 
     <script type="module">
@@ -61,26 +86,68 @@
 
       // adding message
       btn.addEventListener("click", () => {
-        console.log("clicked");
+      console.log("clicked");
 
-        let name = document.getElementById("user-name").value || "Guest";
-        let text = document.getElementById("user-text").value;
+      let name = document.getElementById("user-name").value || "Guest";
+      let text = document.getElementById("user-text").value;
 
-        console.log("current id ", docId);
+      console.log("current id ", docId);
 
-        if (docId) {
-          updateMsg(docId, name, text);
-        } else {
-          addMsg(name, text);
-        }
+      if (docId) {
+      updateMsg(docId, name, text);
+      docId = null;
+      } else {
+      addMsg(name, text);
+      }
 
-        document.getElementById("user-name").value = "";
-        document.getElementById("user-text").value = "";
+      document.getElementById("user-name").value = "";
+      document.getElementById("user-text").value = "";
       });
 
-      getMsg();
+// search
+      document.getElementById('search-btn').addEventListener('click', async () => {
+      // get the search text
+      let searchValue = document.getElementById('search').value;
+      console.log('inside search')
+      let searchInLowerCase = searchValue.toLowerCase();
+      let searchInUpperCase = searchValue.toUpperCase();
 
-      functionObject.one();
+      try {
+      let snap = await firebase.firestore().collection('mz-chat').where('text', '>=', searchInLowerCase).where('text', '<=', searchInLowerCase+'\uf8ff').get()
+      if (!snap.empty){
+      let chatContainer = document.getElementById('chats');
+      chatContainer.innerHTML = '';
+
+      //console.log('We got the snap here: ', snap.data())
+
+      snap.forEach((docs) => {
+      console.log(`${docs.data().name}:${docs.data().text}`);
+
+      let newPTag = document.createElement('p');
+      newPTag.innerText = `${docs.data().name}:${docs.data().text}`;
+      chatContainer.appendChild(newPTag);
+
+      })
+      }else {
+      let chatContainer = document.getElementById('chats');
+      chatContainer.innerHTML = '';
+
+      let newPTag = document.createElement('p');
+      newPTag.innerText = `No Message Found!`;
+      chatContainer.appendChild(newPTag);
+      }
+      }catch (e){
+      console.log(e)
+
+      }
+      })
+
+// clear
+document.getElementById('clear-btn').addEventListener('click', () => {
+  document.getElementById('chats').innerHTML = '';
+  getMsg();
+})
+      getMsg();
     </script>
   </body>
 </html>
