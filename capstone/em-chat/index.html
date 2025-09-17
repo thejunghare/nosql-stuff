@@ -44,15 +44,23 @@
       let btn = document.getElementById("btn");
       let para = document.getElementById("msg");
 
+      let golbalUid = null;
+
       // adding message
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click",async () => {
         console.log("clicked");
 
         // inputs
         let name = document.getElementById("user-name").value || "Guest";
         let text = document.getElementById("user-text").value;
 
-       myfunction.addMsg(name, text)
+        console.log(golbalUid);
+        if (golbalUid){
+            await myfunction.updateMsg(name, text,golbalUid)
+        }else {
+           await myfunction.addMsg(name, text)
+        }
+
 
         document.getElementById("user-name").value = "";
         document.getElementById("user-text").value = "";

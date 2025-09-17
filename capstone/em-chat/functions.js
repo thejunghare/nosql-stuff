@@ -57,7 +57,7 @@ function getMsg() {
                         document.getElementById('user-text').value = oldmsg;
                         
 
-                       
+                        window.golbalUid = change.doc.id;
                     }; 
 
                     if (change.doc.id) {
@@ -80,8 +80,20 @@ function getMsg() {
         });
 }
 
-function updateMsg() {
-    console.log('hey')
+async function updateMsg(name, text, uid) {
+    try {
+       let updateDoc = await firebase.firestore().collection('em-chat').doc(uid).update({
+            name,
+            text
+        })
+
+        if (updateDoc) {
+            console.log('document updated!');
+        }
+    }catch(e){
+        console.log(e);
+    }
+
 }
 
 export const myfunction = {

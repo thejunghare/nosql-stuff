@@ -3,7 +3,8 @@ export async function addMsg(name, text) {
         let result = await firebase
             .firestore()
             .collection("mz-chat")
-            .add({ name, text });
+            .add({name, text});
+
 
         if (result) {
             console.log("document added!");

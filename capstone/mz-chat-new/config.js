@@ -1,9 +1,9 @@
 export const firebaseConfig = {
-    apiKey: "AIzaSyD57N2Ewp8UVtcXKmVMFyP1HeTBksh4iww",
-    authDomain: "my-project-9714d.firebaseapp.com",
-    databaseURL: "https://my-project-9714d-default-rtdb.firebaseio.com",
-    projectId: "my-project-9714d",
-    storageBucket: "my-project-9714d.firebasestorage.app",
-    messagingSenderId: "84976519917",
-    appId: "1:84976519917:web:1294f53b957c48e38f5ae4",
+    apiKey: "AIzaSyCfibnTv03LtZ82Ss9ku6owo25UY0_dcnY",
+  authDomain: "msrtc-test26.firebaseapp.com",
+  databaseURL: "https://msrtc-test26-default-rtdb.firebaseio.com",
+  projectId: "msrtc-test26",
+  storageBucket: "msrtc-test26.firebasestorage.app",
+  messagingSenderId: "201729585988",
+  appId: "1:201729585988:web:0210f5916e55a1ab111d11"
 };
