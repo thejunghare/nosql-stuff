@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+    <!-- storage -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-storage-compat.js"></script>
+  </head>
+  <body>
+    <input type="file" name="" id="file-input" accept="png/jpeg/mp4" />
+    <button id="upload-btn">Upload</button>
+
+    <script>
+      //  import { firebaseConfig } from "./capstone/mz-chat-new/config.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCfibnTv03LtZ82Ss9ku6owo25UY0_dcnY",
+        authDomain: "msrtc-test26.firebaseapp.com",
+        databaseURL: "https://msrtc-test26-default-rtdb.firebaseio.com",
+        projectId: "msrtc-test26",
+        storageBucket: "msrtc-test26.firebasestorage.app",
+        messagingSenderId: "201729585988",
+        appId: "1:201729585988:web:0210f5916e55a1ab111d11",
+      };
+
+      firebase.initializeApp(firebaseConfig);
+
+      let uploadButton = document.getElementById("upload-btn");
+
+      uploadButton.addEventListener("click", async () => {
+        console.log("inside");
+        let file = document.getElementById("file-input").files[0];
+
+        await uploadMediaFiles(file);
+      });
+
+      // Todo: upload my file to storage
+      async function uploadMediaFiles(file) {
+        try {
+          // TODO: make reference of root/bucket, make a ref folder, make a ref to file and then upload the file
+          const rootRef = firebase.storage().ref();
+
+          const folderRef = rootRef.child("profilePic");
+
+          let fileRef = folderRef.child(file.name);
+          // print the file name
+          console.log(file.name);
+
+          await fileRef.put(file);
+        } catch (e) {
+          console.error("Error while uploading file", e);
+        }
+      }
+    </script>
+  </body>
+</html>
