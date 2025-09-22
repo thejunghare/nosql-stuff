@@ -9,4 +9,7 @@ exports.createUserProfile = functions.auth.user().onCreate((user) => {
 
 exports.helloWorld = functions.https.onRequest((req, res) => {
   console.log("Hello!");
+  res.send("Hi")
 });
+
+

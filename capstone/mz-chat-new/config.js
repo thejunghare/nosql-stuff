@@ -1,9 +1,9 @@
 export const firebaseConfig = {
-    apiKey: "AIzaSyCfibnTv03LtZ82Ss9ku6owo25UY0_dcnY",
-  authDomain: "msrtc-test26.firebaseapp.com",
-  databaseURL: "https://msrtc-test26-default-rtdb.firebaseio.com",
-  projectId: "msrtc-test26",
-  storageBucket: "msrtc-test26.firebasestorage.app",
-  messagingSenderId: "201729585988",
-  appId: "1:201729585988:web:0210f5916e55a1ab111d11"
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.FIREBASE_DATABASE_URL,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
 };

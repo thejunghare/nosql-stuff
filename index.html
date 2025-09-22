@@ -3,6 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <meta
+      http-equiv="Access-Control-Allow-Methods"
+      content="GET, POST, PUT, DELETE, OPTIONS"
+    />
+    <meta
+      http-equiv="Access-Control-Allow-Headers"
+      content="Origin, Content-Type, X-Auth-Token"
+    />
     <title>Document</title>
     <!-- firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
@@ -10,49 +19,40 @@
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-storage-compat.js"></script>
   </head>
   <body>
-    <input type="file" name="" id="file-input" accept="png/jpeg/mp4" />
-    <button id="upload-btn">Upload</button>
+    <input type="file" name="" id="file" accept="jpeg/png" />
+    <button id="uploadBtn">Upload</button>
 
     <script>
-      //  import { firebaseConfig } from "./capstone/mz-chat-new/config.js";
-
       const firebaseConfig = {
-        apiKey: "AIzaSyCfibnTv03LtZ82Ss9ku6owo25UY0_dcnY",
-        authDomain: "msrtc-test26.firebaseapp.com",
-        databaseURL: "https://msrtc-test26-default-rtdb.firebaseio.com",
-        projectId: "msrtc-test26",
-        storageBucket: "msrtc-test26.firebasestorage.app",
-        messagingSenderId: "201729585988",
-        appId: "1:201729585988:web:0210f5916e55a1ab111d11",
+        apiKey: process.env.FIREBASE_API_KEY,
+        authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+        databaseURL: process.env.FIREBASE_DATABASE_URL,
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+        messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+        appId: process.env.FIREBASE_APP_ID,
       };
 
       firebase.initializeApp(firebaseConfig);
 
-      let uploadButton = document.getElementById("upload-btn");
-
-      uploadButton.addEventListener("click", async () => {
-        console.log("inside");
-        let file = document.getElementById("file-input").files[0];
-
-        await uploadMediaFiles(file);
+      // get the btn
+      let btn = document.getElementById("uploadBtn");
+      btn.addEventListener("click", async () => {
+        let file = document.getElementById("file").files[0];
+        await uploadMediaFile(file);
       });
 
-      // Todo: upload my file to storage
-      async function uploadMediaFiles(file) {
+      async function uploadMediaFile(file) {
         try {
-          // TODO: make reference of root/bucket, make a ref folder, make a ref to file and then upload the file
-          const rootRef = firebase.storage().ref();
-
-          const folderRef = rootRef.child("profilePic");
-
-          let fileRef = folderRef.child(file.name);
-          // print the file name
+          // TODO: Give ref to following: Bucket, Folder, File
+          const bucketRef = firebase.storage().ref();
+          const folderRef = bucketRef.child("em-profile");
+          const fileRef = folderRef.child(file.name);
+          console.log(fileRef);
           console.log(file.name);
-
           await fileRef.put(file);
-        } catch (e) {
-          console.error("Error while uploading file", e);
-        }
+          getDownloadURL();
+        } catch (e) {}
       }
     </script>
   </body>
